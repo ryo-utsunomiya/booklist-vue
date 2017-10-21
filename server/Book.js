@@ -20,7 +20,7 @@ class Book {
    * @returns {Promise}
    */
   create(title) {
-    return this.db.exec('INSERT INTO books (title) VALUES(?)', [title]);
+    return this.db.exec('INSERT INTO books (title, created_at, updated_at) VALUES(?, NOW(), NOW())', [title]);
   }
 
   /**
