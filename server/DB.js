@@ -5,8 +5,15 @@ class DB {
    * @param config object
    */
   constructor(config) {
-    this.connection = mysql.createConnection(config);
+    this.config = config;
+    this.connected = false;
+  }
+
+  connect() {
+    if (this.connected) return;
+    this.connection = mysql.createConnection(this.config);
     this.connection.connect();
+    this.connected = true;
   }
 
   /**
@@ -15,6 +22,7 @@ class DB {
    */
   query(sql) {
     return new Promise((resolve, reject) => {
+      this.connect();
       this.connection.query(sql, (error, results) => {
         if (error) reject(error);
         else resolve(results);
