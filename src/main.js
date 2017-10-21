@@ -2,9 +2,11 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import 'whatwg-fetch';
 import Vue from 'vue';
+import ElementUI from 'element-ui';
 import App from './App';
 import router from './router';
 
+Vue.use(ElementUI);
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
