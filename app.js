@@ -23,4 +23,23 @@ app.get('/api/', (_, res) => {
     });
 });
 
+app.post('/api/:id/rate/inc', (req, res) => {
+  book().incRate(req.params.id)
+    .then(books => res.json(books))
+    .catch((error) => {
+      res.status(500);
+      res.json(error.message);
+    });
+});
+
+app.post('/api/:id/rate/dec', (req, res) => {
+  book().decRate(req.params.id)
+    .then(books => res.json(books))
+    .catch((error) => {
+      res.status(500);
+      res.json(error.message);
+    });
+});
+
+
 app.listen(3000, () => console.log('App listening on port 3000!'));
