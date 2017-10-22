@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-input placeholder="New book" v-model="newBook" style="width: 90%;"></el-input>
+    <el-input v-model="newBook" @keyup.native.enter="create" style="width: 90%;" placeholder="New book"></el-input>
     <el-button type="primary" @click.prevent="create">Add</el-button>
     <el-table :data="books" style="width: 100%; margin-top: 10px;">
       <el-table-column label="Title" prop="title"></el-table-column>

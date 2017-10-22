@@ -1,5 +1,6 @@
 // FIXME: hard code of API URL
 const baseUrl = 'http://192.168.33.10:3000';
+let requesting = false;
 
 export default {
   name: 'bookList',
@@ -13,6 +14,9 @@ export default {
   },
   methods: {
     create() {
+      if (!this.newBook) return;
+      if (requesting) return;
+      requesting = true;
       fetch(`${baseUrl}/api/`, {
         method: 'POST',
         headers: {
@@ -27,51 +31,65 @@ export default {
           this.dialogMessage = `${this.newBook} is added`;
           this.dialogVisible = true;
           this.newBook = '';
+          requesting = false;
         })
         .catch((err) => {
           // eslint-disable-next-line no-console
           console.error(err);
+          requesting = false;
         });
     },
     increment(index) {
       const id = this.books[index].id;
       if (!id) return;
+      if (requesting) return;
+      requesting = true;
       fetch(`${baseUrl}/api/${id}/rate/inc`, { method: 'POST' })
         .then(response => response.json())
         .then(() => {
           this.books[index].rate += 1;
+          requesting = false;
         })
         .catch((err) => {
           // eslint-disable-next-line no-console
           console.error(err);
+          requesting = false;
         });
     },
     decrement(index) {
       const id = this.books[index].id;
       if (!id) return;
+      if (requesting) return;
+      requesting = true;
       fetch(`${baseUrl}/api/${id}/rate/dec`, { method: 'POST' })
         .then(response => response.json())
         .then(() => {
           this.books[index].rate -= 1;
+          requesting = false;
         })
         .catch((err) => {
           // eslint-disable-next-line no-console
           console.error(err);
+          requesting = false;
         });
     },
     remove(index) {
       const book = this.books[index];
       if (!book) return;
+      if (requesting) return;
+      requesting = true;
       fetch(`${baseUrl}/api/${book.id}`, { method: 'DELETE' })
         .then(response => response.json())
         .then(() => {
           this.books.splice(index, 1);
           this.dialogMessage = `${book.title} is removed`;
           this.dialogVisible = true;
+          requesting = false;
         })
         .catch((err) => {
           // eslint-disable-next-line no-console
           console.error(err);
+          requesting = false;
         });
     },
   },
