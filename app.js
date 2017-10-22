@@ -10,6 +10,7 @@ app.use(express.static(`${__dirname}/dist`));
 app.use((_, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   next();
 });
 app.use(bodyParser.urlencoded({
@@ -43,6 +44,12 @@ app.post('/api/:id/rate/inc', (req, res) => {
 
 app.post('/api/:id/rate/dec', (req, res) => {
   book().decRate(req.params.id)
+    .then(books => res.json(books))
+    .catch(err => onError(err, res));
+});
+
+app.delete('/api/:id', (req, res) => {
+  book().remove(req.params.id)
     .then(books => res.json(books))
     .catch(err => onError(err, res));
 });

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import BookList from '@/components/BookList';
+import BookList from '@/components/BookList/BookList.vue';
 
 Vue.use(Router);
 

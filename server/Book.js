@@ -29,7 +29,7 @@ class Book {
    * @returns {Promise}
    */
   remove(id) {
-    return this.db.exec('DELETE books WHERE id = ?', [id]);
+    return this.db.exec('DELETE FROM books WHERE id = ?', [Number(id)]);
   }
 
   /**
@@ -38,7 +38,7 @@ class Book {
    * @returns {Promise}
    */
   incRate(id) {
-    return this.db.exec('UPDATE books SET rate = rate + 1 WHERE id = ?', [id]);
+    return this.db.exec('UPDATE books SET rate = rate + 1 WHERE id = ?', [Number(id)]);
   }
 
   /**
@@ -47,7 +47,7 @@ class Book {
    * @returns {Promise}
    */
   decRate(id) {
-    return this.db.exec('UPDATE books SET rate = rate - 1 WHERE id = ?', [id]);
+    return this.db.exec('UPDATE books SET rate = rate - 1 WHERE id = ?', [Number(id)]);
   }
 }
 
