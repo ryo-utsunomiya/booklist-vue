@@ -16,6 +16,12 @@ class DB {
     this.connected = true;
   }
 
+  close() {
+    if (!this.connected) return;
+    this.connection.end();
+    this.connected = false;
+  }
+
   /**
    * @param sql string
    * @returns {Promise}
@@ -27,6 +33,7 @@ class DB {
         if (error) reject(error);
         else resolve(results);
       });
+      this.close();
     });
   }
 

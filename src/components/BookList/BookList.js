@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 // FIXME: hard code of API URL
 const baseUrl = 'http://192.168.33.10:3000';
 let requesting = false;
@@ -17,17 +19,13 @@ export default {
       if (!this.newBook) return;
       if (requesting) return;
       requesting = true;
-      fetch(`${baseUrl}/api/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title: this.newBook,
-        }),
-      })
-        .then(response => response.json())
-        .then(() => {
+      axios.post(`${baseUrl}/api/`, { title: this.newBook })
+        .then((res) => {
+          this.books.push({
+            id: res.data.insertId,
+            title: this.newBook,
+            rate: 0,
+          });
           this.dialogMessage = `${this.newBook} is added`;
           this.dialogVisible = true;
           this.newBook = '';
@@ -44,8 +42,7 @@ export default {
       if (!id) return;
       if (requesting) return;
       requesting = true;
-      fetch(`${baseUrl}/api/${id}/rate/inc`, { method: 'POST' })
-        .then(response => response.json())
+      axios.post(`${baseUrl}/api/${id}/rate/inc`)
         .then(() => {
           this.books[index].rate += 1;
           requesting = false;
@@ -61,8 +58,7 @@ export default {
       if (!id) return;
       if (requesting) return;
       requesting = true;
-      fetch(`${baseUrl}/api/${id}/rate/dec`, { method: 'POST' })
-        .then(response => response.json())
+      axios.post(`${baseUrl}/api/${id}/rate/dec`)
         .then(() => {
           this.books[index].rate -= 1;
           requesting = false;
@@ -78,8 +74,7 @@ export default {
       if (!book) return;
       if (requesting) return;
       requesting = true;
-      fetch(`${baseUrl}/api/${book.id}`, { method: 'DELETE' })
-        .then(response => response.json())
+      axios.delete(`${baseUrl}/api/${book.id}`)
         .then(() => {
           this.books.splice(index, 1);
           this.dialogMessage = `${book.title} is removed`;
@@ -95,10 +90,9 @@ export default {
   },
 
   created() {
-    fetch(`${baseUrl}/api/`)
-      .then(response => response.json())
-      .then((data) => {
-        this.books = data;
+    axios.get(`${baseUrl}/api/`)
+      .then((res) => {
+        this.books = res.data;
       })
       .catch((err) => {
         // eslint-disable-next-line no-console
